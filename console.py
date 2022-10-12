@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+from tokenize import Name
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -114,18 +115,30 @@ class HBNBCommand(cmd.Cmd):
         pass
 
     def do_create(self, args):
-        """ Create an object of any class"""
-        if not args:
-            print("** class name missing **")
-            return
-        elif args not in HBNBCommand.classes:
-            print("** class doesn't exist **")
-            return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
-        print(new_instance.id)
-        storage.save()
+        """ Create an object of any class
+            Usage: create <Class name> <param 1> <param 2> <param 3>...
+        """
+        try:
+            if not args:
+                raise SyntaxError()
+            command_list = args.split(" ")
 
+            kwargs = {}
+            for command in command_list[1:]:
+                key, value = tuple(command.split("="))
+                value = value.replace("_", " ")
+                if value[0] == '"':
+                    value = value.strip('"')
+                kwargs[key] = value
+        except SyntaxError:
+            print("** class name missing **")
+        except NameError:
+            print("** class doesn't exist")
+
+        new_instance = HBNBCommand.classes[command_list[0]](**kwargs)
+        storage.new(new_instance)
+        print(new_instance.id)
+        new_instance.save()
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
@@ -322,3 +335,4 @@ class HBNBCommand(cmd.Cmd):
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
+
