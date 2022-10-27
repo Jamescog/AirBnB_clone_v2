@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# create folders if not exist
+# configure brandnew ubuntu 
 sudo apt-get -y update
 sudo apt-get install -y nginx
 slink="/data/web_static/current"
