@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # create folders if not exist
+sudo apt-get update
+sudo apt-get install nginx
 slink="/data/web_static/current"
 s_file="/data/web_static/releases/test/"
 s=("/data/" "/data/web_static/" "/data/web_static/releases/" "/data/web_static/shared/" "/data/web_static/releases/test/")
