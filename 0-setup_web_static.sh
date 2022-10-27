@@ -5,11 +5,11 @@ sudo apt-get install nginx
 slink="/data/web_static/current"
 s_file="/data/web_static/releases/test/"
 s=("/data/" "/data/web_static/" "/data/web_static/releases/" "/data/web_static/shared/" "/data/web_static/releases/test/")
-for fol in ${s[@]}
+for fol in "${s[@]}"
 do
-    if [ ! -d $fol ]
+    if [ ! -d "$fol" ]
     then
-        sudo mkdir -p $fol
+        sudo mkdir -p "$fol"
     fi
 done
 sudo touch /data/web_static/releases/test/index.html
@@ -21,6 +21,7 @@ sudo tee /data/web_static/releases/test/index.html<<EOF
     Holberton School
   </body>
 </html>
+EOF
 if [ -L $slink ]
 then
     sudo rm $slink
