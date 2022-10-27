@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
 Fabric script that generates a .tgz archive from the contents of
-the web_static folder 
+the web_static folder
 """
 
 
@@ -17,11 +17,11 @@ def do_pack():
     """
     time = datetime.utcnow()
     file_name = "versions/web_static_{}{}{}{}{}{}.tgz".format(time.year,
-                                                          time.month,
-                                                          time.day,
-                                                          time.hour,
-                                                          time.minute,
-                                                          time.second)
+                                                              time.month,
+                                                              time.day,
+                                                              time.hour,
+                                                              time.minute,
+                                                              time.second)
 
     if path.exists("versions") is False:
         if local("mkdir -p versions").failed is True:
