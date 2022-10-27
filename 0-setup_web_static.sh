@@ -44,6 +44,7 @@ server {
     }
     location /hbnb_static {
         alias /data/web_static/current/;
+        index index.html
     }
     add_header X-Served-By $HOSTNAME;
      location /redirect_me {
