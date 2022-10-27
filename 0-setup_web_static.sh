@@ -12,9 +12,13 @@ do
 done
 sudo touch /data/web_static/releases/test/index.html
 sudo tee /data/web_static/releases/test/index.html<<EOF
-<h1> Hello Everybody </h1>
-<p>I am excited to see the <em>end</em> of this stuff</p>
-EOF
+<html>
+  <head>
+  </head>
+  <body>
+    Holberton School
+  </body>
+</html>
 if [ -L $slink ]
 then
     sudo rm $slink
@@ -34,9 +38,6 @@ server {
     location = /custom_404.html {
         root /var/www/error;
         internal;
-    }
-    location /something/ {
-        try_files something  =404;
     }
     location /hbnb_static {
         alias /data/web_static/current/;
