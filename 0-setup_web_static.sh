@@ -19,13 +19,12 @@ EOF
 if [ -L $slink ]
 then
     sudo rm $slink
-    sudo ln -s $s_file $slink
+    sudo ln -sf $s_file $slink
 else
-    sudo ln -s $s_file $slink
+    sudo ln -sf $s_file $slink
 fi
-ln -s /etc/nginx/sites-available/default config
 sudo chown -R ubuntu:ubuntu /data/
-sudo tee config<<EOF
+sudo tee /etc/nginx/sites-a*/de*<<EOF
 server {
     listen 80;
     listen [::]:80 default_server;
@@ -38,7 +37,7 @@ server {
     }
     location /hbnb_static {
         alias /data/web_static/current;
-        index index.html
+        index index.html;
     }
     add_header X-Served-By $HOSTNAME;
      location /redirect_me {
