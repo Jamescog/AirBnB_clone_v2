@@ -1,43 +1,48 @@
 #!/usr/bin/env bash
-# This bash script sets up the nginx web server for the deployement of webstatic
-
-apt-get update
-apt-get install nginx -y
-
-mkdir --parents /data/web_static/shared/
-mkdir --parents /data/web_static/releases/test/
-
-echo -e "<html>
+# configure brandnew ubuntu for deployment
+sudo apt-get -y update
+sudo apt-get install -y nginx
+slink="/data/web_static/current"
+s_file="/data/web_static/releases/test/"
+sudo mkdir -p /data/web_static/releases/test/
+sudo mkdir -p /data/web_static/shared/
+sudo touch /data/web_static/releases/test/index.html
+sudo tee /data/web_static/releases/test/index.html<<EOF
+<html>
   <head>
   </head>
   <body>
     Holberton School
   </body>
-</html>" > /data/web_static/releases/test/index.html
-
-ln -sf /data/web_static/releases/test/ /data/web_static/current
-
-chown -R ubuntu /data/
-chgrp -R ubuntu /data/
-
-echo -e "\nserver {
-    listen 80 default_server;
+</html>
+EOF
+if [ -L $slink ]
+then
+    sudo rm $slink
+    sudo ln -s $s_file $slink
+else
+    sudo ln -s $s_file $slink
+fi
+sudo chown -R ubuntu:ubuntu /data/
+sudo tee /etc/nginx/sites-a*/de*<<EOF
+server {
+    listen 80;
     listen [::]:80 default_server;
-    root   /var/www/html;
-    index  index.html;
-    add_header X-Served-By $HOSTNAME;
+    root /var/www/html;
+    index index.html;
+    error_page 404 /custom_404.html;
+    location = /custom_404.html {
+        root /var/www/error;
+        internal;
+    }
     location /hbnb_static {
         alias /data/web_static/current;
         index index.html;
     }
-    location /redirect_me {
-		return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
+    add_header X-Served-By $HOSTNAME;
+     location /redirect_me {
+        return 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;
     }
-    error_page 404 /404.html;
-    location /404 {
-        root /var/www/html;
-        internal;
-    }
-}" > /etc/nginx/sites-available/default
-
-service nginx restart
+}
+EOF
+sudo service nginx reload
