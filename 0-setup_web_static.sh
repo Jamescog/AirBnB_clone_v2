@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # configure brandnew ubuntu for deployment
 sudo apt-get -y update
-sudo apt-get install -y nginx
+sudo apt-get -y install nginx
 slink="/data/web_static/current"
 s_file="/data/web_static/releases/test/"
 sudo mkdir -p /data/web_static/releases/test/
