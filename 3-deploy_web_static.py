@@ -1,10 +1,24 @@
 #!/usr/bin/python3
-"""This python script distributes an archive to web servers,
-using the function do_deploy"""
+"""This python script uploads file to a remote server"""
 from os.path import exists
-from fabric.api import run, put, env
+from fabric.api import run, put, env, local
+from datetime import datetime
 
 env.hosts = ["18.214.88.1", "54.90.14.195"]
+
+
+def do_pack():
+    """A method that acomplishes the above objective"""
+    now = datetime.now()
+    appended_name = now.strftime("%Y%m%d%H%M%S")
+    archive_name = "versions/web_static_" + appended_name + ".tgz"
+
+    local("mkdir -p versions")
+
+    if local("tar -cvzf {} web_static".format(archive_name)).failed is True:
+        return None
+
+    return archive_name
 
 
 def do_deploy(archive_path):
@@ -51,3 +65,11 @@ def do_deploy(archive_path):
         return False
 
     return True
+
+
+def deploy():
+    """Deployes the static content by calling the above methods"""
+    file_path = do_pack()
+    if file_path is not None:
+        return do_deploy(file_path)
+    return False
