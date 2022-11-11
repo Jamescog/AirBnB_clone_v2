@@ -9,7 +9,8 @@
             - /python/(<text>): display "Python" followed by the value of text
             - /number/<n>: displays "n is a number" only if n is an interger
             - /number_template/<n>: display a HTML body only if n is an integer
-            - /number_odd_or_even/<n>: display a HTML page only if n is an integer
+            - /number_odd_or_even/<n>: display a HTML page only
+                if n is an integer
 """
 
 
